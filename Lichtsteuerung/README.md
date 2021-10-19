@@ -5,30 +5,31 @@ Da es nun sehr viel universeller ist wurde der Modulname auf BB_Lichtsteuerung g
 
 ## Änderungen gegenüber dem Original:
 ### Dauerlicht mit automatischem Rückfall auf Normalbetrieb. 
+Mit dieser Funktion kann das Licht dauerhaft Eingeschaltet werden. Während die Funktion aktiv ist werden Trigger von Eingabesensoren ignoriert.  
 Die Dauerlichtfunktion ist als Taster implementiert. d.h. bei jeder Tasterbetätigung (Aktualisierung)  wird Dauerlicht An/Abgeschaltet. Es können beliebig viele Trigger (Taster) hinzugefügt werden. 
 Durch die automatische Rückfallfunktion wird verhindert das vergessen wird das Dauerlicht auch wieder abzuschalten. Der Rückfall auf Normalbetrieb erfolgt nach einer vorwählbaren Timerzeit.
 Dauerlicht ist auch als neue Statusvariable verfügbar. Dies bildet ab ob Dauerlicht Ein oder Abgeschaltet ist. Die Variable kann auch zum Schalten per Script oder zum Triggern weiterer Scripte oder Module verwendet werden. 
 
 ### Statusvariable für Licht Ein/Aus
-Diese ist dafür gedacht um weitere Module oder Ablaufpläne oder auch weitere Scripte mit komplexeren Funktionen triggern zu können 
+Diese Variable bildet den aktuellen Licht An/Aus Status ab. Sie ist dafür gedacht um weitere Module oder Ablaufpläne oder auch weitere Scripte mit komplexeren Funktionen triggern zu können. 
 
 ### Erweiterte Tag/Nachtfunktion 
 Diese wurde dahingehend verändert das im Falle von 'Tag' und der Dimmwert für Tag auf '0' eingestellt ist kein Licht eingeschaltet wird. 
 Im Falle von Nacht wird auf den vorgewählten Dimmwert gedimmt und Schaltervariablen werden entsprechend eingeschaltet.
 
 ### Starten eines Scriptes
-Zusätzlich ODER alternativ zu den Augsabevaribalen kann auch ein Script definiert werden welches bei Licht AN/AUS gestartet wird.
+Zusätzlich ODER alternativ zu den Augsabevaribalen kann auch ein Script definiert werden welches bei Licht An/Aus gestartet wird.
 Der aktuelle Status ist im Script über $_IPS['VALUE'] auswertbar. 
-Die Verwendung eines externen Scriptes ist sinnvoll um, auch komplexere Kommandos wie Auf/Abdimmzeiten oder komplexe Lichtscenen bei Licht An/Aus realisieren zu können. Oder auch gegenseitiges verriegeln mehrerer Lichtsteuerungsinstanzen sollte damit realisierbar sein. 
+Die Verwendung eines externen Scriptes kann notwendig sein um, auch komplexere Kommandos wie Auf- udn Abdimmzeiten oder komplexe Lichtscenen realisieren zu können. Oder auch ein gegenseitiges verriegeln mehrerer Lichtsteuerungsinstanzen sollte damit realisierbar sein. 
 
 ### Debug Meldungen
-Im Debug Fenster werden nun zu allen Aktionen und Statusänderungen entsprechende Log Messages ausgegeben. 
+Im Debug Fenster werden zu allen Aktionen und Statusänderungen entsprechende Log Messages ausgegeben. 
 
 ### Einschaltdauer
 Die Einschaltdauer kann nun als Dezimalzahl angegeben werden. Dadurch ist eine feinere Auflösung möglich. zb 0.5 Minuten -> 30 sec Intervall.
 
 ### Konfigurationsformular 
-Das Formular wurde etwas umgebaut und die optionen in mehrere Gruppierungen unterteilt.
+Das Formular wurde etwas umgebaut und die Optionen zur besseren Übersicht in mehrere Gruppierungen unterteilt.
 
 ### ab hier die Originaldoku
 ---------------------------------------------------------------------------------------------------
