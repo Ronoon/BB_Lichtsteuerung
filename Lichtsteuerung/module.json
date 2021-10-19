@@ -1,0 +1,15 @@
+{
+    "id": "{A983F883-2850-A06D-E31E-68061E56EA4A}",
+    "name": "BB_Lichtsteuerung",
+    "type": 3,
+    "vendor": "",
+    "aliases": 
+    [
+        "BB_Lichtsteuerung"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "BBL",
+    "url": "https://github.com/bbernhard1/BB_Lichtsteuerung/blob/master/README.md"
+}

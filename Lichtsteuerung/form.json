@@ -1,0 +1,232 @@
+{
+    "elements": [
+        {
+            "type": "List",
+            "name": "InputTriggers",
+            "caption": "Input Sensors",
+            "add": true,
+            "delete": true,
+            "rowCount": 5,
+            "columns": [
+                {
+                    "name": "VariableID",
+                    "caption": "Variable",
+                    "width": "auto",
+                    "add": 0,
+                    "edit": {
+                        "type": "SelectVariable"
+                    }
+                },
+                {
+                    "name": "Status",
+                    "caption": "Status",
+                    "width": "100px",
+                    "add": "New"
+                }
+            ]
+        },
+        {
+            "type": "List",
+            "name": "OutputVariables",
+            "caption": "Output Variables",
+            "add": true,
+            "delete": true,
+            "rowCount": 5,
+            "columns": [
+                {
+                    "name": "VariableID",
+                    "caption": "Variable",
+                    "width": "auto",
+                    "add": 0,
+                    "edit": {
+                        "type": "SelectVariable"
+                    }
+                },
+                {
+                    "name": "Status",
+                    "caption": "Status",
+                    "width": "100px",
+                    "add": "New"
+                }
+            ]
+        },
+        
+        {
+            "type": "NumberSpinner",
+            "name": "Duration",
+            "caption": "Duration",
+            "suffix": "minutes",
+            "digits": 1,
+            "width": "100px"
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Night/Day Mode",
+            "items": [
+                { "type": "Select",
+                  "name": "NightMode",
+                  "caption": "Night/Day Mode",
+                  "onChange": "BBL_SetNightMode($id,$NightMode);",
+                  "options": [
+                        { "caption": "Off", "value": "off" },
+                        { "caption": "Night/Day Variable", "value": "boolean" },
+                        { "caption": "Ambient Brightness Variable", "value": "integer" }
+                    ]
+                },
+                {
+                    "type": "Label",
+                    "name": "LabelNightModeSource",
+                    "visible": false,
+                    "caption": "Use a boolean variable to determine if the night mode value should be send (only applicable to dimmable devices)"
+                },
+                {
+                    "type": "SelectVariable",
+                    "name": "NightModeSource",
+                    "caption": "Day/Night",
+                    "visible": false
+                },
+                {
+                    "type": "Label",
+                    "name": "LabelNightModeSourceInverted",
+                    "visible": false,
+                    "caption": "Invert value of night-mode active variable (required if IsDay variable from Location is used)"
+                },
+                {
+                    "type": "CheckBox",
+                    "visible": false,
+                    "name": "NightModeInverted",
+                    "caption": "Inverted"
+                },
+                {
+                    "type": "Label",
+                    "name": "LabelNightModeSourceInteger",
+                    "visible": false,
+                    "caption": "Use a Integer variable (ambient brightness) to determine if the night mode value should be send (only applicable to dimmable devices)"
+                },
+                {
+                    "type": "SelectVariable",
+                    "name": "NightModeSourceInteger",
+                    "visible": false,
+                    "caption": "Ambient Brightness"
+                },
+                {
+                    "type": "Label",
+                    "name": "LabelNightModeSourceIntegerThreshold",
+                    "visible": false,
+                    "caption": "Set threshold for the ambient brightness"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "AmbientBrightnessThreshold",
+                    "visible": false,
+                    "caption": "Ambient Brightness Threshold",
+                    "suffix": " lux"
+				},
+                {
+                    "type": "NumberSpinner",
+                    "name": "NightModeValue",
+                    "visible": false,
+                    "caption": "Brightness (Night Mode)",
+                    "suffix": "%"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "DayModeValue",
+                    "visible": false,
+                    "caption": "Brightness (Day Mode)",
+                    "suffix": "%"
+                }
+            ]
+        },
+        
+        {
+            "type": "ExpansionPanel",
+            "caption": "Manual Mode",
+            "items": [
+                {
+                "type": "List",
+                    "name": "ManualOnTriggers",
+                    "caption": "Manual On Sensors",
+                    "add": true,
+                    "delete": true,
+                    "rowCount": 5,
+                    "columns": [
+                        {
+                            "name": "VariableID",
+                            "caption": "Variable",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        },
+                        {
+                            "name": "Status",
+                            "caption": "Status",
+                            "width": "100px",
+                            "add": "New"
+                        }
+                    ]
+                },   
+                {
+                    "type": "Label",
+                    "caption": "Timer for manual mode (manual mode will stop after intervall and return to normal mode)"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "Duration2",
+                    "caption": "Duration",
+                    "suffix": "minutes",
+                    "digits": 1
+                }
+            ]
+        },    
+
+        {
+            "type": "ExpansionPanel",
+            "caption": "Display remaing time",
+            "items": [
+               {
+                    "type": "CheckBox",
+                    "name": "DisplayRemaining",
+                    "caption": "Display remaing time",
+                    "onChange": "BBL_ToggleDisplayInterval($id, $DisplayRemaining);"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "UpdateInterval",
+                    "caption": "Update Interval",
+                    "suffix": "Seconds"
+                }
+            ]
+        },    
+        
+        {
+            "type": "ExpansionPanel",
+            "caption": "Further Options",
+            "items": [
+                {
+                    "caption": "Optional Script. It will be called when output variables switch",
+                    "name": "OutScriptID",
+                    "type": "SelectScript",
+                    "width": "100%"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "ResendAction",
+                    "caption": "Update Output on every trigger"
+                }
+                
+            ]
+        },    
+        {
+            "type": "Label",
+            "caption": ""
+        }
+    ],
+    "actions": [
+        {
+            "type": "TestCenter"
+        }
+    ]
+}
