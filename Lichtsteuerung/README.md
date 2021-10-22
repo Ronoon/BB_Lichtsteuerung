@@ -8,7 +8,7 @@ Da es nun sehr viel universeller ist wurde der Modulname auf BB_Lichtsteuerung g
 Mit dieser Funktion können die konfigurierten Ausgangsvariablen dauerhaft eingeschaltet werden. Während die Dauerlicht aktiv ist werden alle Trigger von Eingabesensoren ignoriert.  
 Die Dauerlichtfunktion kann entweder mit Schaltern und mit Tastern verwendet werden.
 Definition: Schalter sind bistabil und haben haben sowohl einen EIN und einen AUS Schaltzustand, hingegen sind Taster Monostabil und liefern bei betätigen nur einen kurzen EIN Impuls. 
-Bei korrekter Konfiguration (Einstellung SensorType) wird die Funktion intern entsprechend umgesetzt. d.h. bei Schalter nehmen die Ausgänge den Status des zuletzt betätigten Schlaters an, bie Tastern werden die Ausgänge bei jeder Betätigung umgeschaltet.Es können beliebig viele Eingabesensoren also Schalter und Taster hinzugefügt werden. 
+Bei korrekter Konfiguration (Einstellung der SensorType) wird die Funktion intern entsprechend umgesetzt. d.h. bei Schalter nehmen die Ausgänge den Status des zuletzt betätigten Schalters an, bei Tastern werden die Ausgänge bei jeder Betätigung umgeschaltet. Es können beliebig viele Eingabesensoren also Schalter und Taster hinzugefügt werden. 
 Durch die automatische Rückfallfunktion wird verhindert das vergessen wird das Licht auch wieder abzuschalten. Der Rückfall auf Normalbetrieb erfolgt nach einer vorwählbaren Timerzeit.
 Dauerlicht ist auch als neue Statusvariable verfügbar. Dies bildet ab ob das Licht Ein oder Abgeschaltet ist. Die Variable kann auch zum Schalten per Script oder zum Triggern weiterer Scripte oder Module verwendet werden. 
 

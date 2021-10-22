@@ -54,7 +54,7 @@ class BB_Lichtsteuerung extends IPSModule
 
         //Attributes
     }
-    /****************************************************************************** */
+    /***************************************************************************** */
     public function ApplyChanges()
     {
         //Never delete this line!
