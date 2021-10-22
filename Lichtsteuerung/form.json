@@ -17,6 +17,7 @@
                         "type": "SelectVariable"
                     }
                 },
+                
                 {
                     "name": "Status",
                     "caption": "Status",
@@ -158,6 +159,19 @@
                             "add": 0,
                             "edit": {
                                 "type": "SelectVariable"
+                            }
+                        },
+                        {
+                            "name": "SensorType",
+                            "caption": "SensorType",
+                            "width": "200px",
+                            "add": 1,
+                            "edit":{
+                            "type": "Select", "name": "SType", "caption": "SType",
+                                "options": [
+                                    { "caption": "Static Switch", "value": 0 },
+                                    { "caption": "Momentary Switch", "value": 1 }
+                                ]
                             }
                         },
                         {

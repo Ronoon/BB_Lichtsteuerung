@@ -44,7 +44,10 @@
             "Manual On Sensors": "Dauerlicht Taster",
             "Further Options": "Weitere Einstellungen",
             "seconds": "Sekunden",
-            "Optional Script. It will be called when output variables switch": "Optional: Ausgabescript, dies wird beim Schalten der Ausgabevariablen aufgerufen" 
+            "Optional Script. It will be called when output variables switch": "Optional: Ausgabescript, dies wird beim Schalten der Ausgabevariablen aufgerufen", 
+            "Type": "Type",
+            "Static Switch": "Schalter",
+            "Momentary Switch": "Taster"
         }
     }
 }

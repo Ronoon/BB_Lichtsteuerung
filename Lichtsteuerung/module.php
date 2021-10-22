@@ -32,7 +32,7 @@ class BB_Lichtsteuerung extends IPSModule
         $this->RegisterPropertyInteger('NightModeSourceInteger', 0);
         $this->RegisterPropertyInteger('AmbientBrightnessThreshold', 0);
     
-        //Register Output Script 
+        //Register Output Script
         $this->RegisterPropertyInteger('OutScriptID', 0);
 
         //Registering legacy properties to transfer the data
@@ -64,7 +64,7 @@ class BB_Lichtsteuerung extends IPSModule
         //Register variable if enabled
         $this->MaintainVariable('Remaining', $this->Translate('Remaining time'), VARIABLETYPE_STRING, '', 10, $this->ReadPropertyBoolean('DisplayRemaining'));
     
-       //Delete all references in order to readd them
+        //Delete all references in order to readd them
         foreach ($this->GetReferenceList() as $referenceID) {
             $this->UnregisterReference($referenceID);
         }
@@ -97,7 +97,6 @@ class BB_Lichtsteuerung extends IPSModule
             $outputID = $outputVariable['VariableID'];
             $this->RegisterReference($outputID);
         }
- 
     }
     /****************************************************************************** */
     public function GetConfigurationForm()
@@ -154,48 +153,59 @@ class BB_Lichtsteuerung extends IPSModule
 
     /****************************************************************************** */
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
-    { 
-        #IPS_LogMessage("MessageSink", "New message!!!$TimeStamp, $SenderID, $Message");
-       
+    {
+        
+        #IPS_LogMessage("MessageSink", "Message from SenderID ".$SenderID." with Message ".$Message."\r\n Data: ".print_r($Data, true));
+      
         if ($Message == VM_UPDATE) {
             $StepOut = false;
             $ManualOnTriggers = json_decode($this->ReadPropertyString('ManualOnTriggers'), true);
             foreach ($ManualOnTriggers as $ManualOnTrigger) {
                 if ($SenderID == $ManualOnTrigger['VariableID']) {
-                    $this->RequestAction('ManualOn', !$this->GetValue('ManualOn'));
+                    if ($ManualOnTrigger['SensorType'] == 0) {
+                        $this->RequestAction('ManualOn', GetValue($SenderID));
+                    }
+                    elseif ($ManualOnTrigger['SensorType'] == 1) {
+                        $this->RequestAction('ManualOn', !$this->GetValue('ManualOn'));
+                    }
+                    else {
+                        throw new Exception('Invalid Switch Type selected');
+                    }
+
+
                     $this->SendDebug("Message", "Manual-ON trigger reveived from: ". IPS_GetName(IPS_GetParent($SenderID)) . " (ID:" .$SenderID.")", 0);
                     $StepOut = true;
                 }
             }
             if ($StepOut == false) {
-            $getProfileName = function ($variableID) {
-                $variable = IPS_GetVariable($variableID);
-                if ($variable['VariableCustomProfile'] != '') {
-                    return $variable['VariableCustomProfile'];
-                } else {
-                    return $variable['VariableProfile'];
+                $getProfileName = function ($variableID) {
+                    $variable = IPS_GetVariable($variableID);
+                    if ($variable['VariableCustomProfile'] != '') {
+                        return $variable['VariableCustomProfile'];
+                    } else {
+                        return $variable['VariableProfile'];
+                    }
+                };
+
+                $isProfileReversed = function ($VariableID) use ($getProfileName) {
+                    return preg_match('/\.Reversed$/', $getProfileName($VariableID));
+                };
+
+                if (boolval($Data[0]) ^ $isProfileReversed($SenderID)) {
+                    $this->SendDebug("Message", "ON trigger received from: ".IPS_GetName(IPS_GetParent($SenderID)). " (ID:" .$SenderID.")", 0);
+                    $this->Start();
                 }
-            };
-
-            $isProfileReversed = function ($VariableID) use ($getProfileName) {
-                return preg_match('/\.Reversed$/', $getProfileName($VariableID));
-            };
-
-            if (boolval($Data[0]) ^ $isProfileReversed($SenderID)) {
-                $this->SendDebug("Message", "ON trigger received from: ".IPS_GetName(IPS_GetParent($SenderID)). " (ID:" .$SenderID.")", 0);
-                $this->Start();
-            }
             }
         }
     }
 
     /****************************************************************************** */
     public function RequestAction($Ident, $Value)
-        {
-            switch ($Ident) {
+    {
+        switch ($Ident) {
             case 'Active':
                 $this->SetActive($Value);
-                $this->SendDebug("Module-Status set to: " , $Value, 0);
+                $this->SendDebug("Module-Status set to: ", $Value, 0);
                 break;
         
             case 'Status':
@@ -216,8 +226,7 @@ class BB_Lichtsteuerung extends IPSModule
                 } else {
                     $this->Stop();
                 }
-          
-               break;
+                break;
             default:
                 throw new Exception('Invalid ident');
         }
@@ -236,12 +245,6 @@ class BB_Lichtsteuerung extends IPSModule
     }
 
     /****************************************************************************** */
-    public function SetManualOn(bool $Value)
-    {
-        $this->SetValue('ManualOn', $Value);
-    }
-
-    /****************************************************************************** */
     public function Start()
     {
         if (!$this->GetValue('Active')) {
@@ -255,10 +258,10 @@ class BB_Lichtsteuerung extends IPSModule
         
         if ($this->GetValue('ManualOn') == false) {
             $duration = $this->ReadPropertyFloat('Duration');
-            $this->SetTimerInterval('OffTimer', round($duration * 60 * 1000,0));
+            $this->SetTimerInterval('OffTimer', round($duration * 60 * 1000, 0));
         } else {
             $duration = $this->ReadPropertyFloat('Duration2');
-            $this->SetTimerInterval('OffTimer', round($duration * 60 * 1000,));
+            $this->SetTimerInterval('OffTimer', round($duration * 60 * 1000, ));
         }
         $this->SendDebug("Timer interval set to:", $duration . " minutes", 0);
         
@@ -381,24 +384,20 @@ class BB_Lichtsteuerung extends IPSModule
                         if ($Value== true) {
                             if ($this->GetValue('ManualOn') == true) {
                                 self::switchDevice($outputID, true);
-                             
                             } else {
                                 if ($this->ReadPropertyString('NightMode') == 'off') {     // everything normal if NighMode is OFF
                                     self::switchDevice($outputID, true);
-                                   
                                 } else {
                                     if ($this->ReadPropertyInteger('DayModeValue') > 0) {   // Switch only if DayValue is not 0
                                         self::switchDevice($outputID, true);
-                                
                                     }
                                 }
                             }
                         } else {
                             self::switchDevice($outputID, false);
-                           
-                         }
+                        }
                     }
-                    $this->SendDebug("Variable " .$outputID ." ". IPS_GetName(IPS_GetParent($outputID)). "/" .IPS_GetName($outputID) . " set to:", self::getSwitchValue($outputID),0);
+                    $this->SendDebug("Variable " .$outputID ." ". IPS_GetName(IPS_GetParent($outputID)). "/" .IPS_GetName($outputID) . " set to:", self::getSwitchValue($outputID), 0);
                 break;
 
                 case VARIABLETYPE_INTEGER:
@@ -407,7 +406,7 @@ class BB_Lichtsteuerung extends IPSModule
                     $dimDevice = function ($Value) use ($outputID, $doResend) {
                         if ($doResend || (self::getDimValue($outputID) != $Value)) {
                             self::dimDevice($outputID, $Value);
-                            $this->SendDebug("Variable " .$outputID ." ". IPS_GetName(IPS_GetParent($outputID)). "/" .IPS_GetName($outputID) . " set to:", $Value,0);
+                            $this->SendDebug("Variable " .$outputID ." ". IPS_GetName(IPS_GetParent($outputID)). "/" .IPS_GetName($outputID) . " set to:", $Value, 0);
                         }
                     };
 
@@ -417,10 +416,10 @@ class BB_Lichtsteuerung extends IPSModule
                             case 'boolean':
                                   if (IPS_VariableExists($this->ReadPropertyInteger('NightModeSource'))
                                      && (GetValue($this->ReadPropertyInteger('NightModeSource')) ^ $this->ReadPropertyBoolean('NightModeInverted'))) {
-                                        $dimDevice($this->ReadPropertyInteger('NightModeValue'));
-                                    } else {
-                                        $dimDevice($this->ReadPropertyInteger('DayModeValue'));
-                                    }
+                                      $dimDevice($this->ReadPropertyInteger('NightModeValue'));
+                                  } else {
+                                      $dimDevice($this->ReadPropertyInteger('DayModeValue'));
+                                  }
                                 break;
 
                             case 'integer':
@@ -444,7 +443,7 @@ class BB_Lichtsteuerung extends IPSModule
                         $dimDevice(0);
                     }
                     break;
-                    $this->SendDebug("Variable " .$outputID ." ". IPS_GetName(IPS_GetParent($outputID)). "/" .IPS_GetName($outputID) . " set to:", self::getSwitchValue($outputID),0);
+                    $this->SendDebug("Variable " .$outputID ." ". IPS_GetName(IPS_GetParent($outputID)). "/" .IPS_GetName($outputID) . " set to:", self::getSwitchValue($outputID), 0);
                    
                 default:
                     //Unsupported. Do nothing
