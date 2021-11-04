@@ -382,13 +382,13 @@ class BB_Lichtsteuerung extends IPSModule
                 case VARIABLETYPE_BOOLEAN:
                     if ($doResend || (self::getSwitchValue($outputID) != $Value)) {
                         if ($Value== true) {
-                            if ($this->GetValue('ManualOn') == true) {
+                            if ($this->ReadPropertyInteger('DayModeValue') > 0) {   // Switch only if DayValue is not 0
                                 self::switchDevice($outputID, true);
                             } else {
                                 if ($this->ReadPropertyString('NightMode') == 'off') {     // everything normal if NighMode is OFF
                                     self::switchDevice($outputID, true);
                                 } else {
-                                    if ($this->ReadPropertyInteger('DayModeValue') > 0) {   // Switch only if DayValue is not 0
+                                if ($this->GetValue('ManualOn') == true) {
                                         self::switchDevice($outputID, true);
                                     }
                                 }
