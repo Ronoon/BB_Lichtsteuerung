@@ -385,7 +385,7 @@ class BB_Lichtsteuerung extends IPSModule
                             if ($this->GetValue('ManualOn') == true) {
                                 self::switchDevice($outputID, true);
                             } else {
-                                if ($this->ReadPropertyString('NightMode') == 'off') {     // everything normal if NighMode is OFF
+                                if ($this->ReadPropertyString('NightMode') == 'on') {     // everything normal if NighMode is OFF
                                     self::switchDevice($outputID, true);
                                 } else {
                                     if ($this->ReadPropertyInteger('DayModeValue') > 0) {   // Switch only if DayValue is not 0
